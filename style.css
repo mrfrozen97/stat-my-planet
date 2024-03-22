@@ -4,12 +4,21 @@
 }
 
 body{
-    background-color: #FCB5B5;
+    background-color: #131313;
     text-align: center;
 }
 
-.game{
+.country-row{
+    background-color: rgb(51, 51, 51);
+    width: 60vhpx;
+    height: 6vh;
+    border-radius: 20px;
+    margin: 1vh;
+}
+
+#countires-box{
     height: 70vh;
+    padding: 40px;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
@@ -18,6 +27,12 @@ body{
 .row{
     padding-top: 5px;
     gap: 1vmin;
+}
+
+h1{
+    color: blueviolet;
+    size: 150px;
+    padding-top: 5vh;
 }
 
 
