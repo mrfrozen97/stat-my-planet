@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import json
 import pandas as pd
+from util.worldometer_population import WorldometerPopulation
 
 
 url = "https://www.usdebtclock.org/world-debt-clock.html"
@@ -82,17 +83,18 @@ def parse_population_from_woldometer_span(data):
 
 
 driver = webdriver.Firefox()
-driver.get(url)
-html_content = driver.page_source
-# file = open("abc.txt", "r")
-# html_content = file.read()
+# driver.get(url)
+# html_content = driver.page_source
+population = WorldometerPopulation()
+file = open("abc.txt", "r")
+html_content = file.read()
 soup = BeautifulSoup(html_content)
 country_data = {"country_data": []}
 for country in data_ids:
     curr_data = {
         "country_name": country,
         #"population": extract_number_from_span(soup.find("span", {"id": data_ids[country]["population"]})),
-        "population": get_population_data(country),
+        "population": population.get_population_data(country),
         "debt": extract_number_from_span(soup.find("span", {"id": data_ids[country]["debt"]})),
         "gdp": extract_number_from_span(soup.find("span", {"id": data_ids[country]["gdp"]})),
     }
