@@ -32,59 +32,96 @@ function numberWithCommas(x) {
 }
 
 function formatMoney(num){
+    if(num == "GDP" || num == "Total Debt"){return num;}
     return "$" + numberWithCommas(num);
 }
 
-function calculateLiveGdp(base_gdp, percent){
+function calculateLiveGdp(country, base_gdp, percent){
     if(base_gdp == "GDP"){
         return base_gdp;
     }
     let currTime = Math.floor((new Date()).getTime() / 1000);
     let newYearTime = Math.floor((new Date(new Date().getFullYear(), 0, 1)).getTime() / 1000);
     let gdp = Math.floor(base_gdp + base_gdp*((currTime-newYearTime)/(365*24*3600) * (percent/100)));
-    console.log(gdp);
-    return formatMoney(gdp);
+    //console.log(country);
+    return gdp;
+}
+
+function calculateLiveDebt(liveGDP, debtRatio){
+    if(debtRatio != undefined){
+        let liveDebt = Math.floor(liveGDP * (debtRatio/100));
+        return liveDebt;
+    }
+    return "Total Debt";
 }
 
 function addCountryGDPBlock(row, data){
     const gdpBlock = document.createElement("div");
     gdpBlock.classList.add("country-data-block");
     gdpBlock.classList.add("country-data-block-gdp");
-    gdpBlock.innerHTML = data[row.childNodes[0].childNodes[1].innerHTML]["gdp"];
+    let countryData = data[row.childNodes[0].childNodes[1].innerHTML];
+    if(countryData == undefined){
+        return "No Data";
+    }
+    gdpBlock.innerHTML = countryData["gdp"];
     //row.appendChild(gdpBlock);
-    calculateLiveGdp( data[row.childNodes[0].childNodes[1].innerHTML]["gdp"], 4);
+    //calculateLiveGdp( data[row.childNodes[0].childNodes[1].innerHTML]["gdp"], 4);
     row.insertBefore(gdpBlock, row.childNodes[1]);
 }
 
-function UpdateCountryGDPBlock(row, data){
+function UpdateCountryDataBlock(row, data){
 
-    row.childNodes[1].innerHTML =  calculateLiveGdp( data[row.childNodes[0].childNodes[1].innerHTML]["gdp"],
-     data[row.childNodes[0].childNodes[1].innerHTML]["percent"]);
+    let liveGdp = calculateLiveGdp( row.childNodes[0].childNodes[1].innerHTML,
+        data[row.childNodes[0].childNodes[1].innerHTML]["gdp"],
+        data[row.childNodes[0].childNodes[1].innerHTML]["percent"]);
+    row.childNodes[1].innerHTML =  formatMoney(liveGdp);
+    row.childNodes[2].innerHTML = formatMoney(calculateLiveDebt(liveGdp,
+        data[row.childNodes[0].childNodes[1].innerHTML]["debt_ratio"]));
     //row.appendChild(gdpBlock);
    ;
     
 }
 
+
 function addCountryDebtBlock(row, data){
     const debtBlock = document.createElement("div");
     debtBlock.classList.add("country-data-block");
     debtBlock.classList.add("country-data-block-debt");
-    debtBlock.innerHTML = data["debt"];
+    let countryData = data[row.childNodes[0].childNodes[1].innerHTML];
+    if(countryData == undefined){
+        debtBlock.innerHTML = "No Data";
+    }
+    else{
+        debtBlock.innerHTML = countryData["popularion"];
+    }
+    row.insertBefore(debtBlock, row.childNodes[3]);
     row.appendChild(debtBlock);
 }
 
 function addCountryPopulationBlock(row, data){
-    const populationBlock = document.createElement("div");
-    populationBlock.classList.add("country-data-block");
-    populationBlock.innerHTML = data["population"];
-    row.appendChild(populationBlock);
+    const debtBlock = document.createElement("div");
+    debtBlock.classList.add("country-data-block");
+    let countryData = data[row.childNodes[0].childNodes[1].innerHTML];
+    if(countryData["population"] == undefined){
+        debtBlock.innerHTML = "No Data";
+    }
+    else{
+        debtBlock.innerHTML = countryData["population"];
+    }
+    row.insertBefore(debtBlock, row.childNodes[3]);
+    
 }
 
 function addCountryDgRatioBlock(row, data){
     const ratioBlock = document.createElement("div");
     ratioBlock.classList.add("country-data-block");
     ratioBlock.classList.add("country-data-block-ratio");
-    ratioBlock.innerHTML = data["dg_ratio"];
+    if(data["dg_ratio"] == undefined){
+        ratioBlock.innerHTML = "No Data";
+    }
+    else{
+        ratioBlock.innerHTML = data["dg_ratio"]+"%";
+    }
     row.appendChild(ratioBlock);
 }
 
@@ -93,7 +130,7 @@ function addCountryBlocks(row, data){
     addCountryNameBlock(row, data);
     //addCountryGDPBlock(row, data);
     addCountryDebtBlock(row, data);
-    addCountryPopulationBlock(row, data);
+    //addCountryPopulationBlock(row, data);
     addCountryDgRatioBlock(row, data);
       
 }
@@ -107,7 +144,7 @@ function addNewRow(data){
 }
 
 
-fetch((serverName+"/data/country.json"))
+fetch((serverName+"/data/country_all.json"))
 .then((response) => response.json())
 .then( (json)=>{
     for(let i = 0; i<json["country_data"].length; i++){
@@ -127,19 +164,15 @@ fetch((serverName+"/data/country_gdp.json"))
     console.log(rows);
     for(let i=0; i<rows.length; i++){
         addCountryGDPBlock(rows[i], json);
+        addCountryPopulationBlock(rows[i], json);
     }
 
     setInterval(() =>{
+        
         for(let i=0; i<rows.length; i++){
-            UpdateCountryGDPBlock(rows[i], json);
+            UpdateCountryDataBlock(rows[i], json);
         }
+        
     }, 500);
-
-    // for(let i = 0; i<json["country_data"].length; i++){
-    //     var countriesEconomicsData = json["country_data"][i];
-    //     console.log(countriesEconomicsData);
-    //     addCountryGDPBlock(countriesEconomicsData);
-    
-    // }
 
 });
