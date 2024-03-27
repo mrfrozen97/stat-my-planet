@@ -8,6 +8,16 @@ function addCountryNameBlock(row, data){
     nameBlock.classList.add("country-name-block");
     const countryText = document.createElement("h4");
     countryText.innerHTML = data["country_name"];
+    if(data["country_name"].length >25){
+        countryText.classList.add("country-name-short-2");
+        //console.log("abx");
+    }
+    else if(data["country_name"].length >20){
+        countryText.classList.add("country-name-short-1");
+    }
+    else if(data["country_name"].length >15){
+        countryText.classList.add("country-name-short");
+    }
     countryText.classList.add("country-name-block-title");
     const img = document.createElement("img");
     img.classList.add("flag-icon");

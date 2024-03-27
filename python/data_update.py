@@ -8,7 +8,7 @@ from util.worldometer_population import WorldometerPopulation
 
 
 url = "https://www.usdebtclock.org/world-debt-clock.html"
-
+SLICE_RANKING = 197
 population_data = pd.read_excel("data/countryPopulationData.xlsx")
 debt_data = pd.read_excel("data/countryDebtData.xlsx")
 gdp_data = json.load(open("../data/country_gdp.json", "r"))
@@ -62,6 +62,7 @@ country_data["country_data"].insert(0, {
     "dg_ratio": "Debt to GDP Ratio"
 })
 print(country_data["country_data"])
+country_data["country_data"] = country_data["country_data"][:SLICE_RANKING]
 file = open("../data/country_all.json", "w")
 json.dump(country_data, file)
 file.close()
