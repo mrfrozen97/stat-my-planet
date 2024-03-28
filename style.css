@@ -4,9 +4,41 @@
 }
 
 body{
-    background-color: #131313;
+    background-color: #000000;
     text-align: center;
 }
+
+.header{
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    
+}
+
+.header ul{
+    text-align: center;
+}
+
+.header ul li{
+    display: inline-block;
+}
+
+.header ul li a{
+    display: block;
+    text-decoration: none;
+    color: rgb(135, 135, 135);
+    font-size: 25px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: all 0.5s ease;
+    border-radius: 10px;
+}
+
+.header ul li a:hover{
+    background-color: rgba(72, 72, 72, 0.4);
+}
+
 
 #myVideo {
     width: 100vw;
@@ -31,9 +63,6 @@ body{
     
 }
 
-country-block-parent{
-    
-}
 
 .country-name-block{
     background-color: rgb(9, 8, 8, 0.5);
@@ -111,11 +140,12 @@ country-block-parent{
 .wrapper{
     text-align: center;
     margin-left: 10vh;
-    padding-left: 5vh;
-    padding-top: 10vh;
+    padding-left: 0;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
 }
 .search-box input{
-   width: 60vh;
+   width: 50vh;
    height: 3vh;
    border-radius: 15px;
    background-color: rgba(0, 0, 0, 0.3);
@@ -125,12 +155,11 @@ country-block-parent{
 }
 
 .search-box input:focus{
-    width: 60vh;
     height: 3vh;
     border-radius: 15px;
     background-color: rgba(0, 0, 0, 0.3);
     border: 2px solid rgba(0, 228, 249, 0.5);
-    color: cyan;
+    color: rgba(0, 255, 255, 0.6);
     
  }
 
