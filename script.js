@@ -19,6 +19,7 @@ function addCountryNameBlock(row, data){
         countryText.classList.add("country-name-short");
     }
     countryText.classList.add("country-name-block-title");
+    countryText.setAttribute("id",  data["country_name"]+"-name");
     const img = document.createElement("img");
     img.classList.add("flag-icon");
     img.setAttribute("src", "resources\\flags\\" + data["country_name"] + ".png");
@@ -154,6 +155,35 @@ function addNewRow(data){
 }
 
 
+function implementSearchBox(ids){
+    let text = document.getElementById("country-search-text").value;
+    for(let i =0; i<ids.length; i++){
+        if(text.length==0 || ids[i].toLowerCase().includes(text.toLowerCase())){
+            document.getElementById(ids[i]).style.display = "block";
+        }
+        else{
+            document.getElementById(ids[i]).style.display = "none";
+        }
+    }
+    console.log(text);
+}
+
+function mapCountryName(){
+    let map = [];
+    let countries = document.getElementById("countires-box");
+    for(let i=0; i<countries.childElementCount; i++){
+        let id = countries.childNodes[i].id;
+        console.log(id);
+        if(id != undefined && id !="Country"){
+            map.push(id);
+        }
+    }
+
+    return map;
+
+}
+
+
 fetch((serverName+"/data/country_all.json"))
 .then((response) => response.json())
 .then( (json)=>{
@@ -176,6 +206,8 @@ fetch((serverName+"/data/country_gdp.json"))
         addCountryGDPBlock(rows[i], json);
         addCountryPopulationBlock(rows[i], json);
     }
+    let countryElementsMap = mapCountryName();
+    console.log(countryElementsMap);
 
     setInterval(() =>{
         
@@ -184,5 +216,9 @@ fetch((serverName+"/data/country_gdp.json"))
         }
         
     }, 500);
+
+    setInterval(() =>{
+        implementSearchBox(countryElementsMap);
+    }, 200);
 
 });

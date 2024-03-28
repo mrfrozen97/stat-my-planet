@@ -108,9 +108,51 @@ country-block-parent{
     color: #ffb41f;
 }
 
+.wrapper{
+    text-align: center;
+    margin-left: 10vh;
+    padding-left: 5vh;
+    padding-top: 10vh;
+}
+.search-box input{
+   width: 60vh;
+   height: 3vh;
+   border-radius: 15px;
+   background-color: rgba(0, 0, 0, 0.3);
+   border: 2px solid rgba(182, 182, 182, 0.5);
+   
+   
+}
+
+.search-box input:focus{
+    width: 60vh;
+    height: 3vh;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 228, 249, 0.5);
+    color: cyan;
+    
+ }
+
+ .search-box input[type=text]{
+    padding: 12px 20px;
+    font-size: 20px;
+    
+ }
+
+.search-icon{
+    
+    width: 5vh;
+    height: 5vh;
+    transform: translate(-160%, 30%);
+    color: cyan;
+    
+}
+
 #countires-box{
     height: 100vh;
     padding: 10vh;
+    padding-top: 0;
     margin-left: 10vh;
     margin-right: 10vh ;
     justify-content: center;
